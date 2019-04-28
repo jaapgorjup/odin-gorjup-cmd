@@ -33,7 +33,7 @@ scheme: Paradox
 
 # UI & UX: slogan, color, effect
 uiux:
-    slogan: "Hi, nice to meet you"
+    slogan: "Odin is number 1"
     theme_color: "#0097A7"
     theme_sub_color: "#00838F"
     hyperlink_color: "#00838F"
@@ -157,10 +157,10 @@ toc:
 
 # SNS Menu
 sns:
-    email: youremail@email.com
-    facebook: "https://www.facebook.com/facebook"
-    twitter: "https://twitter.com/twitter"
-    googleplus: "https://www.google.com/"
+    email: odm@gorjup.com
+    facebook: 
+    twitter: "https://twitter.com/odingorjup"
+    googleplus: 
     weibo:
     instagram:
     tumblr:
@@ -174,9 +174,9 @@ sns:
 # SNS Share Switch
 sns_share:
     twitter: true
-    facebook: true
-    googleplus: true
-    weibo: true
+    facebook: false
+    googleplus: false
+    weibo: false
     linkedin: false
     qq: false
     telegram: false
