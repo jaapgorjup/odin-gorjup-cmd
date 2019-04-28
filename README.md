@@ -1,120 +1,91 @@
-# Victor Hugo CMS Template
-<!-- Markdown snippet -->
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/bdougie/casper-cms-template)
+# Hexo + Netlify CMS Starter
 
-![casper theme image](https://s3-us-west-1.amazonaws.com/publis-brian-images/casper.jpg)
+## Intro
+This is an example site built with [Hexo](https://hexo.io/) and [Netlify CMS](https://github.com/netlify/netlify-cms), based on [Viosey's](https://github.com/viosey) [Hexo material theme](https://github.com/viosey/hexo-theme-material).
 
-**A [Hugo](http://gohugo.io/) boilerplate for creating truly epic websites**
+[Live demo](https://hexo-material-cms.netlify.com)
 
-This is a boilerplate for using Hugo as a static site generator and Gulp + Weback as your
-asset pipeline.
+## Deploy to Netlify
+Use the following deploy button to get your own copy of the repository up and running:
 
-It's setup to use post-css and babel for CSS and JavaScript.
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/lunaceee/hexo-material-netlify&stack=cms)
 
-## Usage
-Be sure that you have the latest node, npm and [Hugo](https://gohugo.io/overview/installing/) installed. If you need to install hugo, run:
+The Deploy to Netlify button clones a copy of this repository to your own GitHub or GitLab account. You can clone this repository to your computer for local development.
 
-Clone this repository and run:
+## Local Development
+```
+$ git clone --recursive https://github.com/lunaceee/hexo-material-netlify.git
+$ cd hexo-material-netlify
+$ npm install
+$ hexo server
+```
+_Notice that the `--recursive` flag is important here, as the `material` theme is [introduced as a submodule](https://stackoverflow.com/questions/3796927/how-to-git-clone-including-submodules)._
 
-```bash
-npm install
-npm start
+Alternatively, you can update submodules manually:
+```
+cd hexo-material-netlify
+git submodule init
+git submodule update
 ```
 
-Then visit http://localhost:3000/ - BrowserSync will automatically reload CSS or
-refresh the page when stylesheets or content changes.
+## Netlify CMS editor workflow
+The Netlify CMS `admin` panel is already set up in the repo. You can access it via `yourwebsite.com/admin`, e.g. `localhost:4000/admin`.
+To understand more about the configuration, check out [Netlify CMS docs](https://www.netlifycms.org/docs/intro/).
 
-To build your static output to the `/dist` folder, use:
+## Internationalization with Language-Based Redirects
+Netlify supports a wide range of [Redirect & Rewrite Rules](https://www.netlify.com/docs/redirects/). 
+Our example site is featuring the [Language-based redirecs](https://www.netlify.com/docs/redirects/#geoip-and-language-based-redirects), which comes in handy for any sites that support multiple languages.
 
-```bash
-npm run build
+To enable language based redirects, make sure the following configurations in your root `_config.yml` file is included:
+
+```
+language: 
+  - [language_01]
+  - [language_02]
+  - [language_03]
 ```
 
-## Structure
-
 ```
-|--site                // Everything in here will be built with hugo
-|  |--content          // Pages and collections - ask if you need extra pages
-|  |--data             // YAML data files with any data for use in examples
-|  |--layouts          // This is where all templates go
-|  |  |--partials      // This is where includes live
-|  |  |--index.html    // The index page
-|  |--static           // Files in here ends up in the public folder
-|--src                 // Files that will pass through the asset pipeline
-|  |--css              // CSS files in the root of this folder will end up in /css/...
-|  |--js               // app.js will be compiled to /js/app.js with babel
+i18n_dir: :lang
 ```
-## CMS
-
-### How it works
-
-Netlify CMS is a single-page app that you pull into the `/admin` part of your site.
-
-It presents a clean UI for editing content stored in a Git repository.
-
-You setup a YAML config to describe the content model of your site, and typically
-tweak the main layout of the CMS a bit to fit your own site.
-
-### Setup GitHub as a Backend
-
-In the `config.yml` file [change the GitHub owner and repo](https://github.com/bdougie/strata-cms-template/blob/master/site/static/admin/config.yml#L3) to reflect your repo:
-
-```yaml
-backend:
-  name: github
-  repo: owner/repo # Path to your Github repository
-  branch: master # Branch to update (master by default)
-  
-  ...
+In the markdown file, make sure you specify the language of the post in the front matter:
 ```
-When a user navigates to `/admin` she'll be prompted to login, and once authenticated
-she'll be able to create new content or edit existing content.
-The default Github-based authenticator integrates with Netlify's [Authentication Provider feature](https://www.netlify.com/docs/authentication-providers) and the repository
-backend integrates directly with Github's API.
+lang: [language of preference]
+```
 
-To get everything hooked up, setup continuous deployment from Github to Netlify
-and then follow [the documentation](https://www.netlify.com/docs/authentication-providers)
-to setup Github as an authentication provider.
+Example code of language based redirect rules:
+```
+/           /zh-cn          302  Language=zh
+/about      /zh-cn/about    302  Language=zh
 
-That's it, now you should be able to go to the `/admin` section of your site and
-log in.
+/           /es             302  Language=es
+```
 
-### Find out more and contribute
+Now, if your browser language is set to `zh-cn`, you'll be taken to https://yourwebsite.com/zh-cn/ automatically. You can apply this technique for any other languages. 
+Make sure that the file path in the redirect rules match your folder structures. E.g., I created a `zh-cn` folder for all the pages in Chinese and added an `about` folder containing the about page:
+```
+source/
+├── _data
+│   └── head.json
+├── _posts
+│   ├── Platero
+│   │   └── platero.jpg
+│   ├── Platero.md
+│   ├── hello-world.md
+│   └── 你好.md
+├── _redirects
+├── admin
+│   ├── config.yml
+│   └── index.html
+├── images
+│   └── uploads
+│       └── netlify-logo.png
+└── zh-cn
+    ├── about
+    │   └── index.md
+    └── index.md
+```
+Thus, in my `_redirects` file, I specified `/zh-cn/about` as a redirect rule for the about page in Chinese.
 
-Visit the [Netlify CMS](https://github.com/netlify/netlify-cms/) to find out more and contribute. 
-
-## Basic Concepts
-
-You can read more about Hugo's template language in their documentation here:
-
-https://gohugo.io/templates/overview/
-
-The most useful page there is the one about the available functions:
-
-https://gohugo.io/templates/functions/
-
-For assets that are completely static and don't need to go through the asset pipeline,
-use the `site/static` folder. Images, font-files, etc, all go there.
-
-Files in the static folder ends up in the web root. So a file called `site/static/favicon.ico`
-will end up being available as `/favicon.ico` and so on...
-
-The `src/js/app.js` file is the entrypoint for webpack and will be built to `/dist/app.js`.
-
-You can use ES6 and use both relative imports or import libraries from npm.
-
-Any CSS file directly under the `src/css/` folder will get compiled with [PostCSS Next](http://cssnext.io/)
-to `/dist/css/{filename}.css`. Import statements will be resolved as part of the build
-
-## Deploying to netlify
-
-- Push your clone to your own GitHub repository.
-- [Create a new site on Netlify](https://app.netlify.com/start) and link the repository.
-
-Now netlify will build and deploy your site whenever you push to git.
-
-##  Enjoy!!
-
-#### License
-
-[MIT](LICENSE)
+### Display a single language on the home page
+By default, our theme shows posts in all languages on the home page. We only want to show posts written in the default language of the browser. I found a nice plug-in [hexo-generator-index-i18n](https://github.com/xcatliu/hexo-generator-index-i18n) to filter out the unrelated posts. For example, if you go to https://yourwebsite.com/zh-cn/, you'd only see the posts written in Chinese. 
